@@ -74,10 +74,16 @@ class ViewController: UIViewController {
 	func makePromise(`for` num: Int) -> Promise<Int> {
 		return Promise<Int>{ (fulfill, fail) in
 			DispatchQueue.global().async {
-				print("Processing \(num)")
-				Thread.sleep(forTimeInterval: 0.5)
-				fulfill(num)
+				self.later(num: num, fulfill: fulfill)
 			}
+		}
+	}
+	
+	func later(num: Int, fulfill: @escaping (Int) -> Void) {
+		DispatchQueue.global().async {
+			print("Processing \(num)")
+			Thread.sleep(forTimeInterval: 0.5)
+			fulfill(num)
 		}
 	}
 	
